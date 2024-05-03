@@ -17,15 +17,16 @@ const theme = createTheme({
     }
   },
   typography: {
-    fontFamily: "Inter",
+    fontFamily: "'Hanken Grotesk', sans-serif",
+    fontWeightBold: 600, 
   },
   components: {
     MuiButton: {
       styleOverrides: {
         root: {
           '&:hover': {
-            backgroundColor: '#f0f0f0',
-            color: '#1C3766' // Change this to your desired hover background color
+            backgroundColor: '#00A1E4',
+            color: '#fff'
           },
         },
       },

@@ -1,12 +1,14 @@
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import { Alert, Box, Divider, Fade, Grid, IconButton, InputAdornment, Snackbar, TextField, Typography, styled } from '@mui/material';
+import { Alert, Box, Button, Divider, Fade, Grid, IconButton, InputAdornment, Snackbar, TextField, Typography, styled } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import axios, { AxiosRequestConfig } from 'axios';
 import  useAuth   from '../../Hooks/UseAuth';
 import { useNavigate } from 'react-router-dom';
 import IUserLogin from './Interface/IUserLogin';
+import LoginMessage from '../../Assets/loginmessage.png';
+import Product from '../../Assets/product.png';
 
 const WhiteAlert = styled(Alert)(({ theme }) => ({
   color: theme.palette.common.white,
@@ -15,18 +17,21 @@ const WhiteAlert = styled(Alert)(({ theme }) => ({
 const BootstrapButton = styled(IconButton)(({ theme }) => ({
   boxShadow: 'none',
   textTransform: 'none',
-  fontSize: 16, 
+  fontSize: 30, 
+  width: '250px',
   padding: '6px 12px',
+  fontFamily: 'Hanken Grotesk',
   border: '1px solid',
   lineHeight: 1.5,
-  backgroundColor: '#1C3766',
-  borderColor: '#1C3766',
-  color: 'white',
+  backgroundColor: '#ffffff',
+  borderColor: '#ffffff',
+  color: '#01A2E4',
   '&:hover': {
-    backgroundColor: '#15294D',
-    borderColor: '#15294D',
+    backgroundColor: '#01A2E4',
+    borderColor: '#ffffff',
+    color: '#ffffff',
   },
-  borderRadius: theme.shape.borderRadius, // Ensure the button has the default shape
+  borderRadius: '30px', // Ensure the button has the default shape
 }));
 
 interface UserInfo {
@@ -205,9 +210,8 @@ const handleSnackbarClose = (event: React.SyntheticEvent | Event, reason?: strin
 return (
   <Box 
     sx={{ 
-      backgroundColor: '#F2F2F2',
       flexGrow: 1, 
-      height: '100vh', 
+      height: '100%', 
       display: 'flex', 
       justifyContent: 'center', 
       alignItems: 'center' 
@@ -220,23 +224,7 @@ return (
             color: '#1C2C5A',
             marginBottom: '40px',
           }}>
-          <Typography variant="h1" 
-            sx={{ 
-              fontSize: '240px', 
-              fontFamily: 'Arial', 
-              fontStyle: 'italic', 
-              fontWeight: 'bold' 
-            }}>
-            S&R
-          </Typography>
-          <Typography variant="h4" 
-            sx={{ 
-              marginTop: '-35px',
-              fontSize: '50px', 
-              fontFamily: 'Arial'
-            }}>
-            Membership Shopping
-          </Typography>
+          <img src={Product} alt="Product" width={'700px'}/>
         </Box>
       </Grid>
       <Grid item>
@@ -245,18 +233,7 @@ return (
             padding: '20px', 
             borderRadius: 7, 
             mb: 4,
-            boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.20) inset',
           }}>
-          <Box 
-            sx={{ 
-              textAlign: 'center', 
-              fontSize: '40px', 
-              fontWeight: 'bold', 
-              color: '#1C3766', 
-              mb: 2 
-            }}>
-              CSI System
-          </Box>
           <Box>
             <CardContent 
               sx={{ 
@@ -271,7 +248,7 @@ return (
                   width: '100%' 
                 }}>
                 <TextField 
-                  InputProps={{sx: { borderRadius: 7 }}}
+                  InputProps={{sx: { borderRadius: 4 }}}
                   fullWidth
                   sx={{ PaddingLeft: '100px'}}
                   label='Username'
@@ -290,7 +267,7 @@ return (
               </Box>
               <Box sx={{ paddingTop: '3%', width: '100%' }}>
                 <TextField 
-                  InputProps={{sx: { borderRadius: 7 },
+                  InputProps={{sx: { borderRadius: 4 },
                   endAdornment: (
                     <InputAdornment position="end">
                       <IconButton
@@ -321,47 +298,21 @@ return (
                 />
               </Box>
               <Box sx={{ paddingTop: '4%', flexGrow: 1, display: 'flex', justifyContent: 'center', alignItems: 'flex-end' }}>
-                <BootstrapButton 
-                  sx={{
-                    color: "white",
-                    fontSize: "16px",   
-                    backgroundColor: "#1C3766",
-                    width: "370px",  
-                    borderRadius: "10px", 
-                  }}
-                  onClick={handleLoginSubmit}
-                >
-                  <Typography>
-                    Login 
-                  </Typography>
-                </BootstrapButton>
-              </Box>
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10px', marginTop: '20px' }}>
-                <Divider sx={{ width: '80px' }} />
-                  <Typography variant="body2" sx={{ color: '#1C3766', marginX: '10px' }}>
-                    OR
-                  </Typography>
-                <Divider sx={{ width: '80px' }} />
-              </Box>
-              <Box sx={{ paddingTop: '4%', flexGrow: 1, display: 'flex', justifyContent: 'center', alignItems: 'flex-end' }}>
-                <BootstrapButton 
-                  sx={{
-                    color: "white",
-                    fontSize: "16px",
-                    backgroundColor: "#1C3766",
-                    width: "370px",
-                    borderRadius: "10px",
-                  }}
-                  onClick={handleLoginADSubmit}
-                >
-                  <Typography>
-                    SSO Login 
-                  </Typography>
-                </BootstrapButton>
+                <img src={LoginMessage} alt="Message" />
               </Box>
             </CardContent>
           </Box>
-        </Card>     
+        </Card>
+        <Box>
+          <Typography sx={{ fontSize: '20px', marginLeft: '20px', marginBottom: '10px', fontFamily: 'Hanken Grotesk' }}>
+            Forgot Password
+          </Typography>
+        </Box> 
+        <Box sx={{ width: '300px', }}>
+          <BootstrapButton>
+            LOG IN
+          </BootstrapButton>
+        </Box> 
       </Grid>
     </Grid>
     <Snackbar
