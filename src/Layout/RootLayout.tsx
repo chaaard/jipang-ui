@@ -19,14 +19,32 @@ import axios from 'axios';
 import LoginPage from '../Pages/Auth/Login';
 import Layout from './Layout';
 import Logo from '../Assets/logo.png';
+import IUserLogin from '../Pages/Auth/Interface/IUserLogin';
+import { useNavigate } from 'react-router-dom';
 
 const pages = ['Home', 'About', 'Product', 'Contact Us'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
+function stringAvatar(name: string) {
+  return {
+    children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
+  };
+}
+
 function RootLayout() {
+  const { REACT_APP_API_ENDPOINT } = process.env;
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const { isAuthenticated } = useAuth();
+  const fulleName = window.localStorage.getItem('fullName') as string;
+  const userName = window.localStorage.getItem('userName') as string;
+  const auth = useAuth();
+  const navigate = useNavigate();
+
+  const [login] = useState<IUserLogin>({
+    Username: userName || "",
+    Password: ""
+  });
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -50,6 +68,24 @@ function RootLayout() {
 
   useEffect(() => {
   }, [isAuthenticated]);
+
+  const handleSignOut = () => 
+  {
+    const url = `${REACT_APP_API_ENDPOINT}/UserAuth/Logout`;
+    axios.post(url, login)
+      .then(response => {
+        var result = response.data;
+        if(result.Message === 'Logout Successful')
+        {
+          auth.signOut();
+          navigate('/');
+        }
+      }
+    ).catch(error => {
+      console.error("Error saving data:", error);
+    })
+  };
+
 
   return (
     <Box sx={{ paddingTop: '30px' }}>
@@ -123,8 +159,8 @@ function RootLayout() {
             { isAuthenticated ? (
               <Box sx={{ flexGrow: 0 }}>
                 <Tooltip title="Open settings">
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, }}>
+                    <Avatar sx={{ height: '50px', width: '50px', backgroundColor: '#00A1E4', color:'#FFF' }} {...stringAvatar(fulleName)} />
                   </IconButton>
                 </Tooltip>
                 <Menu
@@ -144,7 +180,11 @@ function RootLayout() {
                   onClose={handleCloseUserMenu}
                 >
                   {settings.map((setting) => (
-                    <MenuItem key={setting} onClick={handleCloseUserMenu} sx={{ fontSize: '20px' }}>
+                    <MenuItem
+                      key={setting}
+                      onClick={setting === 'Logout' ? handleSignOut : handleCloseUserMenu}
+                      sx={{ fontSize: '20px' }}
+                    >
                       <Typography textAlign="center">{setting}</Typography>
                     </MenuItem>
                   ))}

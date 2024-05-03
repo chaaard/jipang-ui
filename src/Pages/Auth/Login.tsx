@@ -58,7 +58,7 @@ const [userInfo, setUserInfo] = useState<UserInfo>({} as UserInfo);
 const userName = window.localStorage.getItem('userName');
 
 useEffect(() => {
-  document.title = 'CSI | Login';
+  document.title = 'JIPANG | Login';
 }, []);
 
 const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -76,11 +76,11 @@ const handleLoginSubmit = () => {
     setErrorMessage('Please input required fields.');
     return;
   }
-  const url = `${REACT_APP_API_ENDPOINT}/Auth/Login`;
+  const url = `${REACT_APP_API_ENDPOINT}/UserAuth/Login`;
   axios.post(url, login)
     .then(response => {
       var result = response.data;
-      if(result.Message !== 'User is already logged in.')
+      if(result.Message === 'Login Successful')
       {
         auth.signIn(result); 
         setIsSnackbarOpen(true);
@@ -90,12 +90,12 @@ const handleLoginSubmit = () => {
         setTimeout(() => {
           setIsSnackbarOpen(false); 
             result.RoleId === 1 ? 
-            navigate('accounting/dashboard-accounting') :  
+            navigate('dashboard') :  
             result.RoleId === 2 ? 
-            navigate('treasury/dashboard-treasury') : 
+            navigate('') : 
             result.RoleId === 4 ? 
-            navigate('system-admin/dashboard-system-admin') : 
-            navigate('maintenance')
+            navigate('') : 
+            navigate('')
           window.location.reload()
         }, 1000,);
       }
@@ -150,44 +150,6 @@ const handleLoginSubmit = () => {
   });
 }
 
-const handleLoginADSubmit = () => {
-  const url = `${REACT_APP_API_ENDPOINT}/Auth/LoginAD`;
-  axios.post(url)
-    .then(response => {
-      var result = response.data;
-      if(result.Message !== 'User is already logged in.')
-      {
-        auth.signIn(result); 
-        setIsSnackbarOpen(true);
-        setSnackbarSeverity('success');
-        setSuccessMessage('Login successfully!')
-        
-        setTimeout(() => {
-          setIsSnackbarOpen(false); 
-          navigate('/');
-          window.location.reload()
-        }, 1000);
-      }
-      else
-      {
-        setIsSnackbarOpen(true);
-        setSnackbarSeverity('error');
-        setErrorMessage('User is already logged in.')
-      }
-    }
-).catch(error => {
-  if (error.response && error.response.status === 401) {
-    setIsSnackbarOpen(true);
-    setSnackbarSeverity('error');
-    setErrorMessage('Invalid credentials. Please try again.');
-  } else {
-    console.error('Login failed:', error);
-    setIsSnackbarOpen(true);
-    setSnackbarSeverity('error');
-    setErrorMessage('Error occurred. Please try again.');
-  }
-  });
-}
 
 const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
   const { name: inputName, value } = event.target;
@@ -309,7 +271,9 @@ return (
           </Typography>
         </Box> 
         <Box sx={{ width: '300px', }}>
-          <BootstrapButton>
+          <BootstrapButton
+            onClick={handleLoginSubmit}
+          >
             LOG IN
           </BootstrapButton>
         </Box> 

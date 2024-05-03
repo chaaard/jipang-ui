@@ -192,9 +192,10 @@ export interface IAuthContext {
     try {
       const getAnalytics: AxiosRequestConfig = {
         method: 'POST',
-        url: `${REACT_APP_API_ENDPOINT}/Auth/Logout`,
+        url: `${REACT_APP_API_ENDPOINT}/UserAuth/Logout`,
         data: login,
       };
+      console.log("test")
       await axios(getAnalytics)
       window.localStorage.clear();
       Cookies.remove('token');
